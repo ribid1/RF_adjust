@@ -1,5 +1,5 @@
 # RF_adjust
-Voice output in Jeti transmitter of Rotorflight Governor status and Rotorflight adjustments  
+Voice output in Jeti transmitter of Rotorflight Governor state and Rotorflight adjustments  
 
       
 Copy the file "RF_adjust.lua" and the folder "Rotorflight" in the "/Apps/" folder of the transmitter   
