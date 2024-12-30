@@ -31,10 +31,10 @@ In my example I just use them to change 18 values, and you can change them indiv
 ![Functions-assignment](help/Functions-assignment.png)
 ![Servo-Assignment](help/Servo-Assignment.png)  
 ![Digital-Trim](help/Digital-Trim.png)  
-![Switch-Functionsgroup]((help/Switch-Functionsgroup_1.png)
-![Switch-Functionsgroup]((help/Switch-Functionsgroup_2.png)  
-![Switch-Functionsgroup]((help/Switch-Functionsgroup_3.png)
-![Switch-Functionsgroup]((help/Switch-Functionsgroup_4.png)  
+![Switch-Functionsgroup](help/Switch-Functionsgroup_1.png)
+![Switch-Functionsgroup](help/Switch-Functionsgroup_2.png)  
+![Switch-Functionsgroup](help/Switch-Functionsgroup_3.png)
+![Switch-Functionsgroup](help/Switch-Functionsgroup_4.png)  
 
 # Example how to setup Rotorflight:
 
