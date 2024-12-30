@@ -9,7 +9,7 @@ There you put your files, but make sure the filename is the same than the englis
 If you are just using one language you will need just the "adjfunc_" and the "governor_" folder, if you are using more languages you have to copy all folders which you are using.
 
 # Configuration:
-
+![Configuration](help/Configuration.png)
 
 # Telemetry window:
 
