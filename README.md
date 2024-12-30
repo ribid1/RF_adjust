@@ -22,7 +22,19 @@ Of course if you change some settings in the rotorflight app, the json file will
 You get two telemetry windows, one for the governor and one for the RF-adjustments
 
 # Example how to setup the Jeti Transmitter:
+There are many ways how to setup the Tx to change the the Rotorflight values, as an example I try to describe how I did it.
+Normaly with a FBL unit you don't need the Trim Buttons, so I'm using them to change the values. 
+In this description I use them to change the PID values.
+To change more than 4 values I set up a combination of a 2-point and a 3-point switch, so you could change at the most 2x3x4 = 24 values.
+In my example I just use them to change 18 values, and you can change them individual for every PID-Rate, so in my case I have setup 4 PID-Rates, which are in total 4*18 = 72 values which I would be able to change.  
 
+![Functions-assignment](help/Functions-assignment.png)
+![Servo-Assignment](help/Servo-Assignmentt.png)  
+![Digital-Trim](help/Digital-Trim.png)  
+![Switch-Functionsgroup](Switch-Functionsgroup_1.png)
+![Switch-Functionsgroup](Switch-Functionsgroup_2.png)  
+![Switch-Functionsgroup](Switch-Functionsgroup_3.png)
+![Switch-Functionsgroup](Switch-Functionsgroup_4.png)  
 
 # Example how to setup Rotorflight:
 
