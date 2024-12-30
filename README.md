@@ -29,12 +29,12 @@ To change more than 4 values I set up a combination of a 2-point and a 3-point s
 In my example I just use them to change 18 values, and you can change them individual for every PID-Rate, so in my case I have setup 4 PID-Rates, which are in total 4*18 = 72 values which I would be able to change.  
 
 ![Functions-assignment](help/Functions-assignment.png)
-![Servo-Assignment](help/Servo-Assignmentt.png)  
+![Servo-Assignment](help/Servo-Assignment.png)  
 ![Digital-Trim](help/Digital-Trim.png)  
-![Switch-Functionsgroup](Switch-Functionsgroup_1.png)
-![Switch-Functionsgroup](Switch-Functionsgroup_2.png)  
-![Switch-Functionsgroup](Switch-Functionsgroup_3.png)
-![Switch-Functionsgroup](Switch-Functionsgroup_4.png)  
+![Switch-Functionsgroup]((help/Switch-Functionsgroup_1.png)
+![Switch-Functionsgroup]((help/Switch-Functionsgroup_2.png)  
+![Switch-Functionsgroup]((help/Switch-Functionsgroup_3.png)
+![Switch-Functionsgroup]((help/Switch-Functionsgroup_4.png)  
 
 # Example how to setup Rotorflight:
 
