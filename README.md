@@ -40,12 +40,16 @@ In my example I just use them to change 18 values, and you can change them indiv
 ![Adjustments in Rotorflight](help/Adjustments_in_Rotorflight.JPG)  
 
 The corresponding configuration file to execute in the CLI of Rotorflight to set the adjustments you can find in the help folder:
+![Adjustments_1-21](help/Adjustments_2-21_Mode_1.txt)
 
 There you also find an excel file where I have listed which functions I have configured:
 
-#dbdis:
-If you are using my dbdis App in Jeti, then you can add a field with the governor state:
+# dbdis:
+If you are using my dbdis App in Jeti, then you can add a field with the governor state:  
 ![dbdis-app](help/dbdis-app.png)
+
+
+(My english is not the best, so if someone will be interested to improve the readme, please go for it)
 
 
 
