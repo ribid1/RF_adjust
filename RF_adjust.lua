@@ -23,12 +23,12 @@
 	----------------------------------------------------------------------------
 --]]
 
-setmetatable(_G, {
-	__newindex = function(array, key, value)
-		print(string.format("Changed _G: %s = %s", tostring(key), tostring(value)));
-		rawset(array, key, value);
-	end
-});
+-- setmetatable(_G, {
+	-- __newindex = function(array, key, value)
+		-- print(string.format("Changed _G: %s = %s", tostring(key), tostring(value)));
+		-- rawset(array, key, value);
+	-- end
+-- });
 
 collectgarbage()
 ----------------------------------------------------------------------
