@@ -8,6 +8,12 @@
 	"PIDprofile":"PID-Profile:",
 	"RATEprofile":"Rate-Profile:",
 	
+	"Fenster":"Window ",
+	"Zeilen":"Rows:",
+	"Spalten":"Columns:",
+	"Schrift":"Font:",
+	"Rahmen":"Frame:",
+	
 	"G0" : "OFF",
 	"G1" : "IDLE",
 	"G2" : "SPOOLUP",
@@ -90,6 +96,12 @@
 	"PIDprofile":"PID-Profile:",
 	"RATEprofile":"Rate-Profile:",
 	
+	"Fenster":"Fenster ",
+	"Zeilen":"Zeilen:",
+	"Spalten":"Spalten:",
+	"Schrift":"Schriftart:",
+	"Rahmen":"Umrandung:",
+
 	"G0" : "AUS",
 	"G1" : "LEERLAUF",
 	"G2" : "HOCHLAUF",
