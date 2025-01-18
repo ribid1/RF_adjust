@@ -23,24 +23,23 @@
 	----------------------------------------------------------------------------
 --]]
 
--- setmetatable(_G, {
-	-- __newindex = function(array, key, value)
-		-- print(string.format("Changed _G: %s = %s", tostring(key), tostring(value)));
-		-- rawset(array, key, value);
-	-- end
--- });
+setmetatable(_G, {
+	__newindex = function(array, key, value)
+		print(string.format("Changed _G: %s = %s", tostring(key), tostring(value)));
+		rawset(array, key, value);
+	end
+});
 
 collectgarbage()
 ----------------------------------------------------------------------
---global:
-Global_adj_func = "No function"
-Global_adj_value = 0
+Global_adjTable = {}
+Global_RF_changed_func = {}
+Global_RF_changed = false
 Global_TurbineState = ""
-Global_adjTable = {R0={},R1={},R2={},R3={},R4={},R5={},R9={},P0={},P1={},P2={},P3={},P4={},P5={},P9={}}
 
 -- Locals for the application
-local appName="RF-adjustments"
-local RF_adjustVersion = "1.0"
+
+local RF_adjustVersion = "1.1"
 local dir = "Apps/Rotorflight/"
 local dirpartGov = "/"..dir.."gov_"
 local dirpartAdjfunc = "/"..dir.."adjfunc_"
@@ -50,20 +49,20 @@ local dirGov, dirAdjfunc
 local funcLabel, funcId, funcParam
 local valueLabel, valueId, valueParam
 local governorLabel, governorId, governorParam
-local Inputs = {"PIDprofile", "RATEprofile"}
 local Label = {}
 local ID = {}
 local Param = {}
 local aktPIDprofile, aktRATEprofile = "9","9"
+local pidval, rateval = 0, 0
 
-local funcTemp, valueTemp, governorTemp = 0, 0, 999
+local adj_func = "No function"
+local adj_val = 0
+local funcTemp, valueTemp, governorTemp = 0, -999, -999
 local funcTempstr ="F999"
 local switch
 local sensoLalist = {"..."}
 local sensoIdlist = {"..."}
 local sensoPalist = {"..."}
-
-local adjchanged = false
 
 local trans, wave
 local lng
@@ -71,21 +70,10 @@ local lngGB = false
 local model
 
 --------------------------------------------------------------------------------
--- Read available sensors for user to select
-local sensors = system.getSensors()
-for i,sensor in ipairs(sensors) do
-	if (sensor.label ~= "") then
-		table.insert(sensoLalist, string.format("%s", sensor.label))
-		table.insert(sensoIdlist, string.format("%s", sensor.id))
-		table.insert(sensoPalist, string.format("%s", sensor.param))
-    end
-end
-
---------------------------------------------------------------------------------
 -- Draw telemetry-window
 local function printAdjFunction()
 	--lcd.drawText(2,6,"T-Status:",FONT_MINI)
-	lcd.drawText(0,1,Global_adj_func.." = "..Global_adj_value,FONT_NORMAL)
+	lcd.drawText(0,1,adj_func.." = "..adj_val,FONT_NORMAL)
 end
 
 local function printGovernor()
@@ -104,7 +92,7 @@ local function funcChanged(value)
 	if (funcId == "...") then
 		funcId = 0
 		funcParam = 0
-		Global_adj_func = "No function"
+		adj_func = "No function"
     end
 	system.pSave("funcId", funcId)
 	system.pSave("funcParam", funcParam)
@@ -118,7 +106,7 @@ local function valueChanged(value)
 	if (valueId == "...") then
 		valueId = 0
 		valueParam = 0
-		Global_adj_value = 0
+		adj_val = 0
     end
 	system.pSave("valueId", valueId)
 	system.pSave("valueParam", valueParam)
@@ -227,20 +215,42 @@ local function loop()
 	local txtelemetry = system.getTxTelemetry()		
 	switchValue = system.getInputsVal(switch)
 	
+	-- gets the active pid Profile
 	sensor = system.getSensorByID(ID.PIDprofile, Param.PIDprofile) 
-	if(sensor and sensor.valid) then aktPIDprofile = tostring(math.floor(sensor.value)) end
+	if(sensor and sensor.valid) then 
+		if sensor.value ~= pidval then
+			pidval = sensor.value
+			aktPIDprofile = "P"..math.floor(pidval)  --tostring(math.floor(pidval))
+			--funcTemp = 0
+			--valueTemp = -999
+		end
+	end	
 	
+	-- gets the active Rate Profile
 	sensor = system.getSensorByID(ID.RATEprofile, Param.RATEprofile) 
-	if(sensor and sensor.valid) then aktRATEprofile = tostring(math.floor(sensor.value)) end
+	if(sensor and sensor.valid) then
+			if sensor.value ~= rateval then
+			rateval = sensor.value
+			aktRATEprofile = "P"..math.floor(rateval)
+			--funcTemp = 0
+			--valueTemp = -999
+		end
+	end	
 	
 	-- plays the changed function
 	sensor = system.getSensorByID(funcId, funcParam) 
 	if(sensor and sensor.valid) then
 		if sensor.value ~= funcTemp then
-			valueTemp = 0
+			valueTemp = -999
 			funcTemp = sensor.value
 			funcTempstr = "F"..math.floor(funcTemp)
-			Global_adj_func = trans[funcTempstr] or funcTempstr
+			if funcTemp < 14 then
+				Global_RF_changed_func[funcTempstr..aktRATEprofile] = true
+			else
+				Global_RF_changed_func[funcTempstr..aktPIDprofile] = true
+			end
+			Global_RF_changed = true
+			adj_func = trans[funcTempstr] or funcTempstr
 			if switchValue == 1 then
 				if wave[funcTempstr] then
 					for _,aktwave in ipairs(wave[funcTempstr]) do
@@ -258,14 +268,20 @@ local function loop()
 	if(sensor and sensor.valid) then
 		if sensor.value ~= valueTemp then
 			valueTemp = sensor.value
-			Global_adj_value = math.floor(valueTemp)
-			adjchanged = true
-			if funcTemp < 14 then
-				Global_adjTable["R"..aktRATEprofile][funcTempstr] = Global_adj_value
-			else
-				Global_adjTable["P"..aktPIDprofile][funcTempstr] = Global_adj_value
-			end
-			if switchValue==1 then system.playNumber(Global_adj_value,0) end	
+			adj_val = math.floor(valueTemp)
+			if funcTemp > 13 then
+				if not Global_adjTable[funcTempstr] then Global_adjTable[funcTempstr] = {} end
+				Global_RF_changed = true
+				Global_adjTable[funcTempstr][aktPIDprofile] = adj_val
+				Global_RF_changed_func[funcTempstr..aktPIDprofile] = true
+				if switchValue==1 then system.playNumber(adj_val,0) end	
+			elseif funcTemp > 0 then
+				Global_RF_changed = true
+				if not Global_adjTable[funcTempstr] then Global_adjTable[funcTempstr] = {} end
+				Global_adjTable[funcTempstr][aktRATEprofile] = adj_val
+				Global_RF_changed_func[funcTempstr..aktRATEprofile] = true
+				if switchValue==1 then system.playNumber(adj_val,0) end		
+			end			
 		end
 	end
 
@@ -288,7 +304,7 @@ local function loop()
 		end
 	end	
 	
-	if txtelemetry.rx1Percent < 1 and txtelemetry.rx2Percent < 1 and txtelemetry.rxBPercent < 1 and adjchanged then
+	if txtelemetry.rx1Percent < 1 and txtelemetry.rx2Percent < 1 and txtelemetry.rxBPercent < 1 then
 		local obj = json.encode(Global_adjTable)
 		local file = io.open(dirModels..model..".jsn", "w+")		
 		if file then
@@ -300,7 +316,7 @@ end
 ----------------------------------------------------------------------
 -- Application initialization
 local function init()
-	system.registerForm(1,MENU_MAIN,appName,initForm)
+	system.registerForm(1,MENU_MAIN,"RF-adjustments",initForm)
 	
 	funcLabel = system.pLoad("funcLabel",0)
 	funcId = system.pLoad("funcId",0)
@@ -312,8 +328,19 @@ local function init()
 	governorId = system.pLoad("governorId",0)
 	governorParam = system.pLoad("governorParam",0)
 	
+		--------------------------------------------------------------------------------
+	-- Read available sensors for user to select
+	local sensors = system.getSensors()
+	for i,sensor in ipairs(sensors) do
+		if (sensor.label ~= "") then
+			table.insert(sensoLalist, string.format("%s", sensor.label))
+			table.insert(sensoIdlist, string.format("%s", sensor.id))
+			table.insert(sensoPalist, string.format("%s", sensor.param))
+		end
+	end
+	
 		
-	for _,i in ipairs(Inputs) do
+	for _,i in ipairs{"PIDprofile", "RATEprofile"} do
 		Label[i] = system.pLoad(i,0)
 		ID[i] = system.pLoad(i.."ID",0)
 		Param[i] = system.pLoad(i.."Param",0)
@@ -341,10 +368,10 @@ local function init()
 		dirGov = dirpartGov..lng.."/"
 	end	
 	
-	model = system.getProperty("Model")
+	model = system.getProperty("Model") or ""
 	file = io.readall(dirModels..model..".jsn") 
 	if file then Global_adjTable = json.decode(file) end
 end
 ----------------------------------------------------------------------
 
-return {init=init, loop=loop, author="dit71", version=RF_adjustVersion, name=appName}
+return {init=init, loop=loop, author="dit71", version=RF_adjustVersion, name="RF-adjustments"}
