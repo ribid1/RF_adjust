@@ -25,25 +25,18 @@ You get two telemetry windows, one for the governor and one for the RF-adjustmen
 There are many ways how to setup the Tx to change the the Rotorflight values, as an example I try to describe how I did it.
 Normaly with a FBL unit you don't need the Trim Buttons, so I'm using them to change the values. 
 In this description I use them to change the PID values.
-To change more than 4 values I set up a combination of a 2-point and a 3-point switch, so you could change at the most 2x3x4 = 24 values.
-In my example I just use them to change 18 values, and you can change them individual for every PID-Rate, so in my case I have setup 4 PID-Rates, which are in total 4*18 = 72 values which I would be able to change.  
+To change more than 4 values I set up a combination of a 2-point and a 3-point switch, so you could change at the most 2x4x4 = 32 values.
+In my example I just use them to change 28 values, and you can change them individual for every PID-Rate, so in my case I have setup 4 PID-Rates, which are in total 4*28 = 112 values which I would be able to change.  
 
 ![Functions-assignment](help/Functions-assignment.png)
 ![Servo-Assignment](help/Servo-Assignment.png)  
-![Digital-Trim](help/Digital-Trim.png)  
-![Switch-Functionsgroup](help/Switch-Functionsgroup_1.png)
-![Switch-Functionsgroup](help/Switch-Functionsgroup_2.png)  
-![Switch-Functionsgroup](help/Switch-Functionsgroup_3.png)
-![Switch-Functionsgroup](help/Switch-Functionsgroup_4.png)  
+![Digital-Trim](help/Digital-Trim.png)   
 
 # Example how to setup Rotorflight:
 ![Adjustments in Rotorflight](help/Adjustments_in_Rotorflight.JPG)  
 
-The corresponding configuration file to execute in the CLI of Rotorflight to set the adjustments you can find in the help folder:
-![Adjustments_1-21](help/Adjustments_2-21_Mode_1.txt)
-
 There you also find an excel file where I have listed which functions I have configured:
-![Trim-Buttons](help/Trim-Buttons_Mode_1.xls)
+coming soon
 
 # dbdis:
 If you are using my dbdis App in Jeti, then you can add a field with the governor state:  
