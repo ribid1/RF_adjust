@@ -22,21 +22,26 @@ Of course if you change some settings in the rotorflight app, the json file will
 You get two telemetry windows, one for the governor and one for the RF-adjustments
 
 # Example how to setup the Jeti Transmitter:
-There are many ways how to setup the Tx to change the the Rotorflight values, as an example I try to describe how I did it.
-Normaly with a FBL unit you don't need the Trim Buttons, so I'm using them to change the values. 
-In this description I use them to change the PID values.
-To change more than 4 values I set up a combination of a 2-point and a 3-point switch, so you could change at the most 2x4x4 = 32 values.
-In my example I just use them to change 28 values, and you can change them individual for every PID-Rate, so in my case I have setup 4 PID-Rates, which are in total 4*28 = 112 values which I would be able to change.  
+ An example how I did it do you find in the ![JETI-TX_configuration_for_Rotorflight_adjustments.pdf](JETI-TX_configuration_for_Rotorflight_adjustments.pdf)
 
-![Functions-assignment](help/Functions-assignment.png)
-![Servo-Assignment](help/Servo-Assignment.png)  
-![Digital-Trim](help/Digital-Trim.png)   
+# Example Jeti configuration file:
+I have add the 0001M7.jsn file, which is my Jeti configuration file from my DC-24 for the M7 (Mode 1). You can use the file either in JETI-Studio or maybe also in your transmitter.
 
-# Example how to setup Rotorflight:
-![Adjustments in Rotorflight](help/Adjustments_in_Rotorflight.JPG)  
+# RF_adj_scr_1 app:
+This app displays all your changed values in Rotorflight on the telemetry screen on your transmitter.  
+The values you are changed during the flight are displayed in red.  
+  
+Just copy "RF_adj_scr_1.lua" in the "/Apps/" folder of the transmitter.  
+  
+You can adjust a few things:  
+![adjustments ind the RF_adj_scr_1 app](help/RF_adj_scr_adjust.png)
 
-There you also find an excel file where I have listed which functions I have configured:
-coming soon
+Example with 2 columns:  
+![Example 2 columns](help/Two_Columns.png)
+
+Example with the two columns split on two telemetry pages:  
+![Example 2 columns](help/One_column_page_1.png)  
+![Example 2 columns](help/One_column_page_2.png)  
 
 # dbdis:
 If you are using my dbdis App in Jeti, then you can add a field with the governor state:  
